@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FairSolver JS Implementation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        small {
+            display: block;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>FairSolver JavaScript Implementation</h2>
+    <p>This tool generates a fair random number based on a hash code and hash key.</p>
+    <p>Enter your hash code, hash key, and the desired number range below, then click "Generate Number".</p>
+
+    <div class="input-group">
+        <label for="hashCode">Hash Code:</label>
+        <input type="text" id="hashCode" value="JXRMUsadp9soYdokALhS1x9kRpLPTYmx4e">
+        <small>Enter your unique hash code</small>
+    </div>
+
+    <div class="input-group">
+        <label for="hashKey">Hash Key:</label>
+        <input type="text" id="hashKey" value="26ea40931f7aa41d4de80d3e7764017169cd8be8d2981668176f6e3a57963da5">
+        <small>Enter your unique hash key</small>
+    </div>
+
+    <div class="input-group">
+        <label for="minNumber">Min Number:</label>
+        <input type="number" id="minNumber" value="1">
+        <small>The minimum number in the range</small>
+    </div>
+
+    <div class="input-group">
+        <label for="maxNumber">Max Number:</label>
+        <input type="number" id="maxNumber" value="6">
+        <small>The maximum number in the range</small>
+    </div>
+
+    <button id="generateBtn">Generate Number</button>
+
+    <div id="result">
+        <p>Click "Generate Number" to calculate the result using the values above</p>
+        <p>You can also modify the values before generating</p>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        // Add event listener to the button
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            const hashCode = document.getElementById('hashCode').value;
+            const hashKey = document.getElementById('hashKey').value;
+            const minNumber = parseInt(document.getElementById('minNumber').value);
+            const maxNumber = parseInt(document.getElementById('maxNumber').value);
+
+            // Basic validation
+            if (!hashCode || !hashKey) {
+                document.getElementById('result').innerHTML = 
+                    `<h1>Error: Hash Code and Hash Key are required</h1>`;
+                return;
+            }
+
+            if (isNaN(minNumber) || isNaN(maxNumber)) {
+                document.getElementById('result').innerHTML = 
+                    `<h1>Error: Min Number and Max Number must be valid numbers</h1>`;
+                return;
+            }
+
+            if (minNumber >= maxNumber) {
+                document.getElementById('result').innerHTML = 
+                    `<h1>Error: Min Number must be less than Max Number</h1>`;
+                return;
+            }
+
+            generateNumber(hashCode, hashKey, minNumber, maxNumber).catch(error => {
+                console.error("Error generating number:", error);
+                document.getElementById('result').innerHTML = 
+                    `<h1>Error: ${error.message}</h1>`;
+            });
+        });
+    </script>
+</body>
+</html>
