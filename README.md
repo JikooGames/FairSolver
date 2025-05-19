@@ -16,6 +16,7 @@ This can be particularly useful for:
 - Deterministic random number generation
 - Verifiable results using SHA-256 hashing
 - Customizable range for generated numbers
+- Key verification functionality to validate private key and public address pairs
 - Simple and lightweight implementation
 - User-friendly web interface
 - Works in both browser and Node.js environments
@@ -99,7 +100,64 @@ const result = generateRandomNumber(
 console.log("Generated number:", result);
 ```
 
+### Key Verification
+
+Fair Solver also provides functionality to verify if a private key corresponds to a public address. This is useful for validating key pairs:
+
+```javascript
+// Browser environment
+async function verifyKeyPair(privateKey, publicAddress) {
+    const isValid = await isAddressFromPrivateKey(privateKey, publicAddress);
+
+    if (isValid) {
+        console.log("The private key and public address are valid and match!");
+    } else {
+        console.log("The private key and public address do not match or are invalid");
+    }
+
+    return isValid;
+}
+
+// Example usage
+verifyKeyPair(
+    "26ea40931f7aa41d4de80d3e7764017169cd8be8d2981668176f6e3a57963da5",
+    "JXRMUsadp9soYdokALhS1x9kRpLPTYmx4e"
+).then(result => console.log("Verification result:", result));
+```
+
+For Node.js environments:
+
+```javascript
+const crypto = require('crypto');
+
+// Implementation of isAddressFromPrivateKey for Node.js would be required
+// This is a simplified example
+function verifyKeyPair(privateKey, publicAddress) {
+    // Call your Node.js implementation of isAddressFromPrivateKey
+    const isValid = isAddressFromPrivateKey(privateKey, publicAddress);
+
+    if (isValid) {
+        console.log("The private key and public address are valid and match!");
+    } else {
+        console.log("The private key and public address do not match or are invalid");
+    }
+
+    return isValid;
+}
+
+// Example usage
+const result = verifyKeyPair(
+    "26ea40931f7aa41d4de80d3e7764017169cd8be8d2981668176f6e3a57963da5",
+    "JXRMUsadp9soYdokALhS1x9kRpLPTYmx4e"
+);
+console.log("Verification result:", result);
+```
+
+In the web interface, you can use the "Verify Keys" button to check if your private key and public address pair is valid.
+
 ## How It Works
+
+### Random Number Generation
 
 1. The system combines a hash key and a hash code
 2. It applies the SHA-256 hashing algorithm to this combination
@@ -111,6 +169,23 @@ This method ensures that:
 - The same hash code and key will always produce the same number
 - The distribution is uniform across the specified range
 - The result is cryptographically secure and difficult to predict without knowing both the hash code and key
+
+### Key Verification
+
+The key verification functionality works as follows:
+
+1. The system takes a private key and a public address as input
+2. It derives the public key from the private key using cryptographic operations
+3. The public key is then hashed using keccak256 (SHA3-256)
+4. The system extracts a portion of the hash and prepends a specific prefix
+5. This value is encoded using base58check encoding
+6. The resulting string is compared with the provided public address
+7. If they match, the private key and public address pair is valid
+
+This verification ensures that:
+- The private key corresponds to the public address
+- The key pair is cryptographically valid
+- Users can verify the ownership of a public address
 
 ## Example
 
