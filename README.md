@@ -35,6 +35,11 @@ git clone https://github.com/JikooGames/FairSolver.git
 
 2. Open the index.html file in your web browser or serve it using a web server.
 
+## Demo
+
+You can try out the Fair Solver online at:
+[https://solver.jikoo.games](https://solver.jikoo.games)
+
 ## Usage
 
 ### Web Interface
